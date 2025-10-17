@@ -112,6 +112,23 @@ console.log(frutas.includes("pera".toLocaleLowerCase()))
 
 console.log(frutas.find((fruta) =>{return fruta.length > 5 }))
 
+function buscar(frutas:string[]):string|undefined{
+    for (let x = 0;x<frutas.length;x++){
+        const valorX = frutas[x];
+
+        if (valorX!=undefined && valorX.length>5){
+            return valorX;
+            break;
+        }
+    }
+}
+
+//NOT NULL ASSERTION
+//valor[x]!.length Ejecuta el length si o si
+//valor[x]?.length En caso de que valor[x] no sea undefenide o null no se ejecuta el length
+
+//console.log(apellido ?? "")  En caso de que sea undefined se imprime cadena vacia en caso de que no sea undefined se imprime apellido
+
 console.log(frutas.findIndex((fruta) => {return fruta.length>5}))
 
 //FOREACH RECORRE TODOS LOS ELEMENTOS
@@ -189,6 +206,50 @@ function saludar(nombre:string, apellido?:string){
     apellido!=undefined?console.log(`Hola ${nombre} ${apellido}`):console.log(`Hola ${nombre}`)
 
     console.log(`Hola ${nombre} ${apellido ?? ""}`)
-    
-    
 }
+
+//FUNCIÓN CON PARAMETROS POR DEFECTO
+function potencia(base:number,exponente:number=2){
+    return base**exponente
+}
+console.log(potencia(2))
+console.log(potencia(2,4))
+
+
+//FUCIÓN FLECHA
+const fflecha = (a:number) => {return a}
+const fflecha2 = (a:number) => a //SI ES EN LA MISMA LÍNEA TE PUEDES SALTAR LAS LLAVES Y EL RETURN
+
+
+function math(a:number,b:number,operacion:(a:number,b:number) => number) {
+    return operacion(a,b)
+}
+
+const farrowsumar = (a:number,b:number) => a+b
+const frestar = function(a:number,b:number):number{return a+b} 
+
+console.log(math(4,2,farrowsumar))
+console.log(math(4,2,frestar))
+
+//PASARLE A FUNCION NUMERO INDEFINIDO DE PARAMETROS
+function multipleParams (...valores:number[]){
+    let suma = valores.reduce((previousValue:number,currentValue:number) => previousValue+= currentValue,0)
+    return suma
+}
+console.log(multipleParams(4,3,2,1))
+
+interface DataApi{
+    message:string,
+    status:string
+}
+//FUNCIONES ASINCRONAS
+async function getApiData(url:string):Promise<DataApi> {
+    const respuesta = await fetch(url)
+    const datos = respuesta.json() as Promise<DataApi>
+    return datos
+}
+
+getApiData("https://dog.ceo/api/breeds/image/random")
+.then((value:DataApi) => {console.log(value.message)})
+.catch((error) => {console.log(error)})
+
